@@ -1,0 +1,15 @@
+# Gradle
+build/
+.gradle/
+local.properties
+
+# OSX
+.DS_Store
+
+# IDEA/Android Studio
+*.iml
+*.iws
+.idea/*
+!.idea/codeStyles
+!.idea/inspectionProfiles
+captures/
