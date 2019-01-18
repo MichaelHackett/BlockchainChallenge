@@ -5,11 +5,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import com.blockchain.challenge.R
+import com.blockchain.challenge.sources.BitcoinTransaction
 
-class TransactionListAdapter :
+class TransactionListAdapter(private val transactions : List<BitcoinTransaction>) :
         RecyclerView.Adapter<TransactionListAdapter.TransactionViewHolder>() {
-
-    private val transactions : List<String> = listOf("A", "B", "C")
 
     class TransactionViewHolder(val textView: TextView) : RecyclerView.ViewHolder(textView)
 
@@ -21,7 +20,7 @@ class TransactionListAdapter :
     }
 
     override fun onBindViewHolder(holder: TransactionViewHolder, position: Int) {
-        holder.textView.text = transactions[position]
+        holder.textView.text = transactions[position].amount.toString()
     }
 
     override fun getItemCount() = transactions.size
