@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Blockchain Challenge</string>
+    <string name="spent_label">Spent</string>
+    <string name="received_label">Received</string>
     <string name="action_settings">Settings</string>
 </resources>

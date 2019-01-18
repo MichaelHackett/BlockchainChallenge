@@ -1,4 +1,5 @@
 <resources>
     <dimen name="item_side_margin">8dp</dimen>
     <dimen name="item_vertical_margin">4dp</dimen>
+    <dimen name="field_spacing">8dp</dimen>
 </resources>

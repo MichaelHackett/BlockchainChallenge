@@ -10,7 +10,7 @@ interface BlockchainService {
     @GET("multiaddr")
     fun transactions(
             @Query("active") address : BitcoinAddress
-    ): Call<MultiAddressResponse> // Call -> Observable ?
+    ): Call<MultiAddressResponse>
 }
 
 data class MultiAddressResponse(
@@ -18,6 +18,6 @@ data class MultiAddressResponse(
 )
 
 data class BitcoinTransaction(
-    @SerializedName("result") val amount : Int,
-    val time : Int // TODO: decode to time
+    @SerializedName("result") val amount : Long,
+    val time : Long
 )

@@ -1,11 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/transaction_text"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/item_vertical_margin"
-    android:layout_marginBottom="@dimen/item_vertical_margin"
-    android:layout_marginStart="@dimen/item_side_margin"
-    android:layout_marginEnd="@dimen/item_side_margin"
-    android:textAppearance="?attr/textAppearanceListItem"
-    />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/item_vertical_margin"
+        android:layout_marginBottom="@dimen/item_vertical_margin"
+        android:layout_marginStart="@dimen/item_side_margin"
+        android:layout_marginEnd="@dimen/item_side_margin">
+
+    <TextView
+            android:id="@+id/transaction_list_item_action_text"
+            android:layout_width="80sp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/item_side_margin"
+            android:layout_marginRight="@dimen/item_side_margin"
+            android:layout_gravity="start|bottom"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textIsSelectable="true"/>
+
+    <TextView
+            android:id="@+id/transaction_list_item_amount_text"
+            android:layout_width="100sp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/field_spacing"
+            android:layout_marginRight="@dimen/field_spacing"
+            android:layout_gravity="start|bottom"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textIsSelectable="true"/>
+
+    <TextView
+            android:id="@+id/transaction_list_item_time_text"
+            android:layout_width="160sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|bottom|fill_horizontal"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textIsSelectable="true"/>
+
+</LinearLayout>
