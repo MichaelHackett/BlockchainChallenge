@@ -1,5 +1,6 @@
 package com.blockchain.challenge.app
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -7,11 +8,10 @@ import android.support.v7.widget.RecyclerView
 import com.blockchain.challenge.R
 import com.blockchain.challenge.model.BitcoinAddress
 import com.blockchain.challenge.sources.BlockchainService
-import com.blockchain.challenge.sources.MultiAddressResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 const val bitcoinAddressHash = "xpub6CfLQa8fLgtouvLxrb8EtvjbXfoC1yqzH6YbTJw4dP7srt523AhcMV8Uh4K3TWSHz9oDWmn9MuJogzdGU3ncxkBsAC9wFBLmFrWT9Ek81kQ"
@@ -19,6 +19,7 @@ const val bitcoinAddressHash = "xpub6CfLQa8fLgtouvLxrb8EtvjbXfoC1yqzH6YbTJw4dP7s
 class TransactionsListActivity : AppCompatActivity() {
     val bitcoinAddress = BitcoinAddress(bitcoinAddressHash)
 
+    @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transactions_list)
@@ -30,22 +31,16 @@ class TransactionsListActivity : AppCompatActivity() {
         }
 
         val retrofit = Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
             .baseUrl("https://blockchain.info")
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
         val blockchain = retrofit.create(BlockchainService::class.java)
 
-        blockchain.transactions(bitcoinAddress).enqueue(object : Callback<MultiAddressResponse> {
-            override fun onResponse(call: Call<MultiAddressResponse>, response: Response<MultiAddressResponse>) {
-                if (response.isSuccessful) {
-                    transactionsListView.adapter = TransactionListAdapter(
-                            response.body()?.transactions ?: listOf())
-                }
-            }
-            override fun onFailure(call: Call<MultiAddressResponse>, t: Throwable) {
-                // TODO: Report error
-                transactionsListView.adapter = TransactionListAdapter(listOf())
-            }
-        })
+        blockchain.transactions(bitcoinAddress)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io()).subscribe {
+            transactionsListView.adapter = TransactionListAdapter(it.transactions)
+        }
     }
 }

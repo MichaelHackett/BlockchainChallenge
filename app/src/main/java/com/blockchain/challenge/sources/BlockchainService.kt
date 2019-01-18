@@ -2,7 +2,7 @@ package com.blockchain.challenge.sources
 
 import com.blockchain.challenge.model.BitcoinAddress
 import com.google.gson.annotations.SerializedName
-import retrofit2.Call
+import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -10,7 +10,7 @@ interface BlockchainService {
     @GET("multiaddr")
     fun transactions(
             @Query("active") address : BitcoinAddress
-    ): Call<MultiAddressResponse>
+    ): Observable<MultiAddressResponse>
 }
 
 data class MultiAddressResponse(
