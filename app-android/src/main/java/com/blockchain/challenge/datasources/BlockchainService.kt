@@ -1,6 +1,5 @@
-package com.blockchain.challenge.sources
+package com.blockchain.challenge.datasources
 
-import com.blockchain.challenge.model.BitcoinAddress
 import com.google.gson.annotations.SerializedName
 import io.reactivex.Observable
 import retrofit2.Retrofit
@@ -9,7 +8,22 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-// Retrofit source for accessing the Blockchain REST API
+/** Retrofit source for accessing the Blockchain REST API. */
+interface BlockchainService {
+    @GET("multiaddr")
+    fun transactions(
+            @Query("active") address: String
+    ): Observable<MultiAddressResponse>
+
+    data class MultiAddressResponse(
+        @SerializedName("txs") val transactions: List<BitcoinTransaction>
+    )
+
+    data class BitcoinTransaction(
+        @SerializedName("result") val amount: Long,
+        val time: Long
+    )
+}
 
 fun blockchainService(): BlockchainService =
         Retrofit.Builder()
@@ -18,19 +32,3 @@ fun blockchainService(): BlockchainService =
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .build()
         .create(BlockchainService::class.java)
-
-interface BlockchainService {
-    @GET("multiaddr")
-    fun transactions(
-            @Query("active") address: BitcoinAddress
-    ): Observable<MultiAddressResponse>
-}
-
-data class MultiAddressResponse(
-    @SerializedName("txs") val transactions: List<BitcoinTransaction>
-)
-
-data class BitcoinTransaction(
-    @SerializedName("result") val amount: Long,
-    val time: Long
-)

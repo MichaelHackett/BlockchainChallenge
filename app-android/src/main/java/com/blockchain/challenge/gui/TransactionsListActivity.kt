@@ -1,4 +1,4 @@
-package com.blockchain.challenge.guiadapters
+package com.blockchain.challenge.gui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -11,13 +11,19 @@ import com.blockchain.challenge.app.TransactionListView
 import com.blockchain.challenge.app.TransactionView
 import com.blockchain.challenge.app.TransactionsViewerApp
 import com.blockchain.challenge.model.BitcoinAddress
-import com.blockchain.challenge.sources.BitcoinTransaction
-import com.blockchain.challenge.sources.blockchainService
+import com.blockchain.challenge.model.BitcoinTransaction
+import com.blockchain.challenge.datasources.blockchainService
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.text.DateFormat
+import java.util.Date
 
+/**
+ * Android wrapper for the [TransactionsViewerApp].
+ * This performs any required programmatic setup of GUI items, instantiates the adapters for
+ * any ports defined by the application or its dependencies, and bootstraps the process.
+ */
 class TransactionsListActivity : AppCompatActivity() {
     private lateinit var app: TransactionsViewerApp
 
@@ -41,10 +47,12 @@ class TransactionsListActivity : AppCompatActivity() {
     }
 
     private fun transactionsSource(address: BitcoinAddress): Observable<List<BitcoinTransaction>> {
-        return blockchainService().transactions(address)
+        return blockchainService().transactions(address.toString())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .map { it.transactions }
+                .map { response -> response.transactions.map { tx ->
+                    BitcoinTransaction(tx.amount, Date(tx.time * 1000))
+                }}
     }
 
     private fun transactionsListViewAdapter() = object : TransactionListView {

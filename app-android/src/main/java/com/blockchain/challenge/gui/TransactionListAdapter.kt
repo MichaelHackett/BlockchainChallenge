@@ -1,4 +1,4 @@
-package com.blockchain.challenge.guiadapters
+package com.blockchain.challenge.gui
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -8,7 +8,8 @@ import com.blockchain.challenge.R
 import com.blockchain.challenge.app.TransactionAction
 import com.blockchain.challenge.app.TransactionView
 
-class TransactionListAdapter(private val transactionsViews: List<TransactionView>):
+/** [RecyclerView] adapter for the transactions list view. */
+class TransactionListAdapter(private val transactionsViews: List<TransactionView>) :
         RecyclerView.Adapter<TransactionListAdapter.TransactionViewHolder>() {
 
     class TransactionViewHolder(val transactionRow: ViewGroup): RecyclerView.ViewHolder(transactionRow)
